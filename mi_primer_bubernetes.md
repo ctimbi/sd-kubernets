@@ -2,14 +2,13 @@
 **Sistemas Distribuidos | Ciencias de la Computación**
 
 > **Nivel:** Básico — primer contacto con Kubernetes  
-> **Duración estimada:** 60-90 minutos  
 > **Prerrequisitos:** Docker instalado y conocido, minikube instalado  
 
 ---
 
 ## Objetivos
 
-Al finalizar esta práctica serás capaz de:
+Al finalizar esta práctica será capaz de:
 
 - Iniciar y gestionar un clúster Kubernetes local con minikube
 - Crear y gestionar Pods usando `kubectl`
@@ -22,7 +21,7 @@ Al finalizar esta práctica serás capaz de:
 
 ## Contexto
 
-Ya sabes crear contenedores Docker. Ahora imagina que tienes 50 contenedores corriendo: algunos caen, hay que distribuir el tráfico entre ellos, actualizarlos sin interrumpir el servicio. Hacer todo eso manualmente sería imposible.
+Ya sabe crear contenedores Docker. Ahora imagine que tiene 50 contenedores corriendo: algunos caen, hay que distribuir el tráfico entre ellos, actualizarlos sin interrumpir el servicio. Hacer todo eso manualmente sería imposible.
 
 **Kubernetes (K8s) automatiza todo esto.** En esta práctica desplegarás una aplicación web simple con Nginx usando los tres objetos más fundamentales de Kubernetes: `Pod`, `Deployment` y `Service`.
 
@@ -40,13 +39,13 @@ minikube version
 kubectl version --client
 ```
 
-Deberías ver versiones de los tres. Si alguno falla, instálalo antes de continuar.
+Debería ver versiones de los tres. Si alguno falla, instálalo antes de continuar.
 
 ---
 
 ### 1.2 Iniciar el clúster
 
-Arranca un clúster Kubernetes local. Usamos Docker como driver porque ya lo tienes instalado:
+Arranca un clúster Kubernetes local. Usamos Docker como driver porque ya lo tiene instalado:
 
 ```bash
 minikube start --driver=docker --cpus=2 --memory=4096
@@ -60,7 +59,7 @@ Cuando termine, verifica que el clúster está corriendo:
 minikube status
 ```
 
-Deberías ver algo como:
+Debería ver algo como:
 
 ```
 minikube
@@ -71,7 +70,7 @@ apiserver: Running
 kubeconfig: Configured
 ```
 
-Ahora explora el clúster con kubectl:
+Ahora explore el clúster con kubectl:
 
 ```bash
 # Ver los nodos del clúster
@@ -81,18 +80,18 @@ kubectl get nodes
 kubectl get nodes -o wide
 ```
 
-**¿Qué estás viendo?** En minikube hay un único nodo que actúa simultáneamente como Control Plane (el "cerebro") y Worker Node (donde corren las apps). En un clúster real de producción estos roles están en máquinas separadas.
+**¿Qué está viendo?** En minikube hay un único nodo que actúa simultáneamente como Control Plane (el "cerebro") y Worker Node (donde corren las apps). En un clúster real de producción estos roles están en máquinas separadas.
 
 ```bash
 # Ver todos los namespaces del sistema
 kubectl get namespaces
 ```
 
-Los namespaces `kube-system` y `kube-public` son del sistema de Kubernetes. El namespace `default` es donde crearás tus recursos.
+Los namespaces `kube-system` y `kube-public` son del sistema de Kubernetes. El namespace `default` es donde creará sus recursos.
 
 ---
 
-## Parte 2 — Tu primer Pod
+## Parte 2 — Su primer Pod
 
 ### 2.1 ¿Qué es un Pod?
 
@@ -102,7 +101,7 @@ La diferencia con Docker: en Docker lanzas contenedores directamente. En Kuberne
 
 ### 2.2 Crear un Pod manualmente
 
-Crea un archivo llamado `mi-primer-pod.yaml` con este contenido:
+Cree un archivo llamado `mi-primer-pod.yaml` con este contenido:
 
 ```yaml
 # mi-primer-pod.yaml
@@ -126,8 +125,8 @@ spec:
 | Campo | Qué significa |
 |-------|---------------|
 | `apiVersion: v1` | Versión de la API de K8s para este recurso |
-| `kind: Pod` | El tipo de objeto que estás creando |
-| `metadata.name` | El nombre con el que identificarás este Pod |
+| `kind: Pod` | El tipo de objeto que está creando |
+| `metadata.name` | El nombre con el que identificará este Pod |
 | `metadata.labels` | Etiquetas clave-valor para organizar y seleccionar recursos |
 | `spec.containers` | La lista de contenedores que vivirán en este Pod |
 | `image: nginx:1.21` | La imagen Docker a usar (igual que en `docker run`) |
@@ -176,7 +175,7 @@ En la salida de `describe` presta atención a:
 
 ### 2.4 Interactuar con el Pod
 
-Puedes abrir una terminal dentro del Pod, igual que con `docker exec`:
+Puede abrir una terminal dentro del Pod, igual que con `docker exec`:
 
 ```bash
 kubectl exec -it mi-primer-pod -- bash
@@ -195,7 +194,7 @@ hostname
 exit
 ```
 
-**Observa:** el `hostname` dentro del Pod es el mismo nombre del Pod (`mi-primer-pod`). Cada Pod tiene su propio hostname.
+**Observe:** el `hostname` dentro del Pod es el mismo nombre del Pod (`mi-primer-pod`). Cada Pod tiene su propio hostname.
 
 Ver los logs del contenedor:
 
@@ -217,7 +216,7 @@ kubectl delete pod mi-primer-pod
 kubectl get pods
 ```
 
-**Punto clave:** el Pod desapareció y no volverá. Los Pods creados manualmente son efímeros — si los eliminas o el nodo falla, no se recrean solos. Para eso existe el Deployment.
+**Punto clave:** el Pod desapareció y no volverá. Los Pods creados manualmente son efímeros — si los elimina o el nodo falla, no se recrean solos. Para eso existe el Deployment.
 
 ---
 
@@ -231,7 +230,7 @@ El Deployment es el objeto que usarás en el 90% de los casos reales.
 
 ### 3.2 Crear el Deployment
 
-Crea `nginx-deployment.yaml`:
+Cree `nginx-deployment.yaml`:
 
 ```yaml
 # nginx-deployment.yaml
@@ -305,7 +304,7 @@ kubectl get replicasets
 Esta es una de las características más poderosas de Kubernetes. Vamos a eliminar uno de los Pods y ver qué pasa:
 
 ```bash
-# Copia el nombre de uno de los Pods de la lista anterior
+# Copie el nombre de uno de los Pods de la lista anterior
 kubectl get pods
 
 # Elimina ese Pod (sustituye <nombre-pod> por el nombre real)
@@ -354,7 +353,7 @@ Un **Service** provee una IP virtual estable y un nombre DNS que siempre apunta 
 
 ### 4.2 Crear un Service NodePort
 
-Crea `nginx-service.yaml`:
+Cree `nginx-service.yaml`:
 
 ```yaml
 # nginx-service.yaml
@@ -376,7 +375,7 @@ spec:
 **Entiende el flujo de puertos:**
 
 ```
-Tú (browser) → nodePort 30080 → port 80 del Service → targetPort 80 del Pod
+Usted (browser) → nodePort 30080 → port 80 del Service → targetPort 80 del Pod
 ```
 
 El campo `selector: app: nginx` conecta el Service con todos los Pods que tengan el label `app: nginx`. Así K8s sabe a qué Pods enviar el tráfico.
@@ -400,13 +399,13 @@ Esto abre el browser con la URL correcta. También puedes obtener solo la URL:
 minikube service nginx-service --url
 ```
 
-Copia esa URL y prueba con curl:
+Copie esa URL y pruebe con curl:
 
 ```bash
 curl <URL-obtenida>
 ```
 
-Deberías ver el HTML de la página de bienvenida de Nginx.
+Debería ver el HTML de la página de bienvenida de Nginx.
 
 ---
 
@@ -420,7 +419,7 @@ kubectl describe service nginx-service
 
 En la descripción, observa:
 
-- **Endpoints:** lista de `IP:puerto` de cada Pod conectado al Service. Si eliminas un Pod y K8s crea uno nuevo, los Endpoints se actualizan automáticamente.
+- **Endpoints:** lista de `IP:puerto` de cada Pod conectado al Service. Si elimina un Pod y K8s crea uno nuevo, los Endpoints se actualizan automáticamente.
 - **NodePort:** el puerto externo (30080)
 - **Selector:** `app=nginx` — la regla que conecta el Service con los Pods
 
@@ -434,7 +433,7 @@ Un **ConfigMap** almacena configuración no sensible (texto, parámetros, archiv
 
 ### 5.2 Crear el ConfigMap
 
-Crea `nginx-config.yaml`:
+Cree `nginx-config.yaml`:
 
 ```yaml
 # nginx-config.yaml
@@ -466,7 +465,7 @@ kubectl describe configmap nginx-html
 
 ### 5.3 Montar el ConfigMap en el Deployment
 
-Actualiza `nginx-deployment.yaml` para usar el ConfigMap como volumen:
+Actualice `nginx-deployment.yaml` para usar el ConfigMap como volumen:
 
 ```yaml
 # nginx-deployment.yaml (versión actualizada)
@@ -507,7 +506,7 @@ kubectl apply -f nginx-deployment.yaml
 kubectl rollout status deployment/nginx-app
 ```
 
-Accede nuevamente al servicio y verás tu página personalizada:
+Acceda nuevamente al servicio y verá su página personalizada:
 
 ```bash
 minikube service nginx-service
@@ -543,7 +542,7 @@ El dashboard es una excelente forma de visualizar lo que pasa en el clúster.
 kubectl get all
 ```
 
-En la salida identificarás: `pod/`, `service/`, `deployment.apps/` y `replicaset.apps/`. Esta vista te muestra el estado completo del namespace.
+En la salida identificará: `pod/`, `service/`, `deployment.apps/` y `replicaset.apps/`. Esta vista le muestra el estado completo del namespace.
 
 ---
 
@@ -570,13 +569,13 @@ minikube stop
 
 ## Preguntas de reflexión
 
-Responde estas preguntas basándote en lo que observaste:
+Responda estas preguntas basándose en lo que observó:
 
 **1. Pod vs Deployment**  
-¿Por qué se recomienda usar un Deployment en lugar de crear Pods manualmente? ¿Qué pasó cuando eliminaste un Pod del Deployment?
+¿Por qué se recomienda usar un Deployment en lugar de crear Pods manualmente? ¿Qué pasó cuando eliminó un Pod del Deployment?
 
 **2. Auto-healing**  
-Explica con tus propias palabras cómo funciona el auto-healing. ¿Qué componente del Control Plane es responsable de detectar que un Pod cayó y crear uno nuevo?
+Explique con sus propias palabras cómo funciona el auto-healing. ¿Qué componente del Control Plane es responsable de detectar que un Pod cayó y crear uno nuevo?
 
 **3. Service y selección**  
 ¿Cómo sabe el Service a qué Pods enviarle el tráfico? ¿Qué pasaría si crearas un Pod con el label `app: nginx` en otro Deployment — el Service también le enviaría tráfico?
