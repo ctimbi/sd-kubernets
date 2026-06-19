@@ -3,16 +3,14 @@
 
 | | |
 |---|---|
-| **Modalidad** | Grupos de 2 integrantes |
-| **Calificación** | Sobre 100 puntos (pondera 5% de la nota final) |
-| **Plazo de entrega** | 1 semana desde la fecha de publicación |
+| **Modalidad** | Pareja |
 | **Entregables** | Informe técnico + Video demo |
 
 ---
 
 ## Contexto
 
-Durante las prácticas 1 y 2 aprendieron a desplegar aplicaciones en Kubernetes usando los objetos fundamentales del ecosistema. Ahora darán un paso hacia la realidad: tomar un sistema ya existente, diseñado para Docker Compose, y llevar esa arquitectura a Kubernetes tomando decisiones técnicas fundamentadas.
+Durante las prácticas 1 y 2 se aprendieron a desplegar aplicaciones en Kubernetes usando los objetos fundamentales del ecosistema. Ahora darán un paso hacia la realidad: tomar un sistema ya existente, diseñado para Docker Compose, y llevar esa arquitectura a Kubernetes tomando decisiones técnicas fundamentadas.
 
 El sistema de referencia es **[mas-alla-del-localhost](https://github.com/ctimbi/mas-alla-del-localhost)**: una aplicación de producción simulada que implementa balanceo de carga, caché distribuido, rate limiting y observabilidad completa con Prometheus y Grafana.
 
@@ -99,7 +97,7 @@ La migración debe implementarse en **minikube** e incluir como mínimo:
 
 ### 3. Observabilidad
 
-La observabilidad no es opcional: es parte del criterio de evaluación. El grupo debe demostrar que el sistema *realmente funciona* desde dentro de Kubernetes.
+El grupo debe demostrar que el sistema *realmente funciona* desde dentro de Kubernetes.
 
 **Métricas activas**
 - Prometheus scrapeando las métricas de la API, redis-exporter y nginx-exporter desde dentro del clúster
@@ -107,8 +105,7 @@ La observabilidad no es opcional: es parte del criterio de evaluación. El grupo
 
 **Evidencia durante la demo**
 - Generar tráfico y mostrar las métricas actualizándose en Grafana en tiempo real
-- Mostrar métricas antes y después de un rolling update
-- Mostrar el comportamiento del HPA bajo carga (usando el load-generator o cualquier herramienta similar)
+- Mostrar el comportamiento del HPA bajo carga (usando el load-generator, jmeter o cualquier herramienta similar)
 
 ---
 
@@ -130,13 +127,13 @@ Cada mejora debe estar justificada: por qué Docker Compose no la resuelve y qu�
 
 ## Entregables
 
-### Informe técnico (PDF o Word)
+### Informe técnico (PDF)
 
 Documento estructurado que incluya:
 
 1. **Análisis de la arquitectura original** — respuestas a las preguntas del punto 1
 2. **Decisiones técnicas** — para cada componente: qué tipo de objeto K8s se usó y por qué
-3. **Comparativa Docker Compose vs Kubernetes** — qué ganaron, qué complicaron, qué aprendieron
+3. **Comparativa Docker Compose vs Kubernetes** — qué se ganó, qué complicaciones, qué se aprendió
 4. **Mejoras implementadas** — descripción, justificación y evidencia de funcionamiento
 5. **Reflexión grupal** — ¿En qué escenario real usarían Kubernetes? ¿Cuándo seguirían con Docker Compose?
 
@@ -152,7 +149,6 @@ Grabación de pantalla que demuestre el sistema en ejecución. El video debe mos
 6. El HPA respondiendo a carga generada
 7. Al menos una de las mejoras implementadas en funcionamiento
 
-No se necesita edición. El video puede ser la pantalla grabada directamente.
 
 ---
 
@@ -182,10 +178,9 @@ Clonen el repositorio, estudien el `docker-compose.yml`, el `Dockerfile`, la est
 ## Recomendaciones
 
 - Lean el `README.md` completo del repositorio antes de empezar — explica los conceptos demostrados, el troubleshooting conocido y los próximos pasos sugeridos por el autor.
-- Usen `kompose convert` como punto de partida para generar YAMLs preliminares desde el `docker-compose.yml`, pero no lo entreguen tal cual — revísenlo, corríjanlo y justifiquen los cambios.
 - Para la imagen de la API (que tiene `Dockerfile` propio), investiguen cómo cargar imágenes locales en minikube sin necesidad de un registry externo: `minikube image load` o el uso del daemon Docker de minikube (`eval $(minikube docker-env)`).
 - La observabilidad es la evidencia de que el sistema funciona. Un sistema "desplegado" pero sin métricas activas es un sistema que no puede monitorearse en producción.
 
 ---
 
-*Cualquier duda técnica sobre el enunciado puede consultarse durante las horas de clase o a través del canal oficial del curso.*
+*Cualquier duda técnica sobre el enunciado puede consultarse durante las horas de clase o a través del canal de whatsapp del curso.*
